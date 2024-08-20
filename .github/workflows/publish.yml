@@ -67,6 +67,7 @@ jobs:
           username: ${{ env.SERVER_USERNAME }}
           host: ${{ env.SERVER_HOST }}
           key: ${{ env.SSH_PRIVATE_KEY }}
+          passphrase: ${{ secrets.SSH_PASS_PHRASE }}
           script: |
             ssh -vvvv -i ~/.ssh/id_rsa ${{ env.SERVER_USERNAME }}@${{ env.SERVER_HOST}}
             docker stop erp || true
