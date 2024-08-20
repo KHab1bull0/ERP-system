@@ -34,9 +34,9 @@ jobs:
 
       - name: echo docker username
         run: if [ "${{ secrets.DOCKER_USERNAME }}" = "ha8i8ullo" ]; then
-            echo "Docker username is correct"
+            echo "Docker username is correct";
             else
-            echo "Docker username is incorrect"
+            echo "Docker username is incorrect";
           fi
 
       - name: Login to DockerHub
