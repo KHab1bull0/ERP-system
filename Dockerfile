@@ -10,8 +10,6 @@ COPY . .
 
 RUN npx prisma generate
 
-RUN npx prisma migrate deploy
-
 ENV DOT_ENV_PATH=./.env
 
 EXPOSE 5000
