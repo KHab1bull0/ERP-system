@@ -76,5 +76,5 @@ jobs:
       
       - name: Run migrations
         run: |
-           docker exec -it erp npx prisma migrate deploy
+           sudo docker exec -it erp npx prisma migrate deploy
 
