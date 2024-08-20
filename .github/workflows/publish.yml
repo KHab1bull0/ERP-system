@@ -61,7 +61,6 @@ jobs:
         run: |
           cat ~/.ssh/id_rsa
 
-
       - name: Deploy to AWS EC2 
         uses: appleboy/ssh-action@master
         with:
