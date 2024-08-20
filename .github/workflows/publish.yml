@@ -52,6 +52,7 @@ jobs:
 
       - name: Setup SSH Key
         run: |
+          mkdir -p ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 400 ~/.ssh/id_rsa
           ssh-keyscan ${{ secrets.SERVER_HOST }} >> ~/.ssh/known_hosts
