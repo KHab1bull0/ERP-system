@@ -58,10 +58,6 @@ jobs:
           chmod 400 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ env.SERVER_HOST }} >> ~/.ssh/known_hosts
 
-      # - name: Check SSH Key
-      #   run: |
-      #     cat ~/.ssh/id_rsa
-
       - name: Deploy to AWS EC2 
         uses: appleboy/ssh-action@master
         with:
