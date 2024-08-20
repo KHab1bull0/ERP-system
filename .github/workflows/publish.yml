@@ -11,7 +11,17 @@ env:
     SERVER_USERNAME: ${{ secrets.SERVER_USERNAME }}
     SERVER_HOST: ${{ secrets.SERVER_HOST }}
     SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-
+    SMTP_PASSWORD: ${{secrets.SMTP_PASSWORD}}
+    SMTP_USER: ${{secrets.SMTP_USER}}
+    SMTP_PORT: ${{secrets.SMTP_PORT}}
+    SMTP_HOST: ${{secrets.SMTP_HOST}}
+    REFRESH_EXPIRE_TIME: ${{secrets.REFRESH_EXPIRE_TIME}}
+    ACCESS_EXPIRE_TIME: ${{secrets.ACCESS_EXPIRE_TIME}}
+    REFRESH_KEY: ${{secrets.REFRESH_KEY}}
+    ACCESS_KEY: ${{secrets.ACCESS_KEY}}
+    DATABASE_URL: ${{secrets.DATABASE_URL}}
+    PORT: 3000
+    
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -25,24 +35,24 @@ jobs:
       - name: Login to DockerHub
         uses: docker/login-action@v1
         with:
-          password: ${{ secrets.DOCKER_PASSWORD }}
-          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ env.DOCKER_PASSWORD }}
+          username: ${{ env.DOCKER_USERNAME }}
 
       - name: Build and push Docker image
         run: |
-          docker build -t ${{secrets.DOCKER_USERNAME}}/erpsystem:latest .
-          docker push ${{secrets.DOCKER_USERNAME}}/erpsystem:latest
+          docker build -t ${{env.DOCKER_USERNAME}}/erpsystem:latest .
+          docker push ${{env.DOCKER_USERNAME}}/erpsystem:latest
 
       - name: Deploy to AWS EC2
         uses: appleboy/ssh-action@master
         with:
-          username: ${{ secrets.SERVER_USERNAME }}
-          host: ${{ secrets.SERVER_HOST }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          username: ${{ env.SERVER_USERNAME }}
+          host: ${{ env.SERVER_HOST }}
+          key: ${{ env.SSH_PRIVATE_KEY }}
           script: |
             docker stop erp || true
             docker rm erp || true
-            docker image rm ${{secrets.DOCKER_USERNAME}}/erpsystem:latest
-            docker pull ${{secrets.DOCKER_USERNAME}}/erpsystem:latest
-            docker run -d --restart unless-stopped  --name erp -e SMTP_PASSWORD=${{secrets.SMTP_PASSWORD}} -e SMTP_USER=${{secrets.SMTP_USER}} -e SMTP_PORT=${{secrets.SMTP_PORT}} -e SMTP_HOST=${{secrets.SMTP_HOST}} -e REFRESH_EXPIRE_TIME=${{secrets.REFRESH_EXPIRE_TIME}} -e ACCESS_EXPIRE_TIME=${{secrets.ACCESS_EXPIRE_TIME}} -e REFRESH_KEY=${{secrets.REFRESH_KEY}} -e ACCESS_KEY=${{secrets.ACCESS_KEY}} -e DATABASE_URL=${{secrets.DATABASE_URL}} -e PORT=3000 -p 5000:3000 ${{secrets.DOCKER_USERNAME}}/erpsystem:latest
+            docker image rm ${{env.DOCKER_USERNAME}}/erpsystem:latest
+            docker pull ${{env.DOCKER_USERNAME}}/erpsystem:latest
+            docker run -d --restart unless-stopped  --name erp -e SMTP_PASSWORD=${{env.SMTP_PASSWORD}} -e SMTP_USER=${{env.SMTP_USER}} -e SMTP_PORT=${{env.SMTP_PORT}} -e SMTP_HOST=${{env.SMTP_HOST}} -e REFRESH_EXPIRE_TIME=${{env.REFRESH_EXPIRE_TIME}} -e ACCESS_EXPIRE_TIME=${{env.ACCESS_EXPIRE_TIME}} -e REFRESH_KEY=${{env.REFRESH_KEY}} -e ACCESS_KEY=${{env.ACCESS_KEY}} -e DATABASE_URL=${{env.DATABASE_URL}} -e PORT=3000 -p 5000:3000 ${{env.DOCKER_USERNAME}}/erpsystem:latest
 
