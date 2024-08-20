@@ -21,7 +21,7 @@ export class StudentService {
       const user = await this.prisma.student.findFirst({ where: { email: email } });
 
       if (user) {
-        return { message: "Admin already exists", status: HttpStatus.BAD_REQUEST }
+        return { message: "Student already exists", status: HttpStatus.BAD_REQUEST }
       }
 
       signupStudentDto.password = await this.hash.hashPassword(signupStudentDto.password);
@@ -31,7 +31,7 @@ export class StudentService {
       });
 
       const number = this.otp.generateOtp(6)
-      const otp = await this.prisma.otps.create({
+      await this.prisma.otps.create({
         data: { email: email, otp: number }
       });
 
