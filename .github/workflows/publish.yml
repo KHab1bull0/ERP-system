@@ -70,9 +70,9 @@ jobs:
           passphrase: ${{ secrets.SSH_PASS_PHRASE }}
           script: |
             ssh -vvvv -i ~/.ssh/id_rsa ${{ env.SERVER_USERNAME }}@${{ env.SERVER_HOST}}
-            docker stop erp || true
-            docker rm erp || true
-            docker image rm ${{env.DOCKER_USERNAME}}/erpsystem:latest
-            docker pull ${{env.DOCKER_USERNAME}}/erpsystem:latest
-            docker run -d --restart unless-stopped  --name erp -e SMTP_PASSWORD=${{env.SMTP_PASSWORD}} -e SMTP_USER=${{env.SMTP_USER}} -e SMTP_PORT=${{env.SMTP_PORT}} -e SMTP_HOST=${{env.SMTP_HOST}} -e REFRESH_EXPIRE_TIME=${{env.REFRESH_EXPIRE_TIME}} -e ACCESS_EXPIRE_TIME=${{env.ACCESS_EXPIRE_TIME}} -e REFRESH_KEY=${{env.REFRESH_KEY}} -e ACCESS_KEY=${{env.ACCESS_KEY}} -e DATABASE_URL=${{env.DATABASE_URL}} -e PORT=3000 -p 5000:3000 ${{env.DOCKER_USERNAME}}/erpsystem:latest
+            sudo docker stop erp || true
+            sudo docker rm erp || true
+            sudo docker image rm ${{env.DOCKER_USERNAME}}/erpsystem:latest
+            sudo docker pull ${{env.DOCKER_USERNAME}}/erpsystem:latest
+            sudo docker run -d --restart unless-stopped  --name erp -e SMTP_PASSWORD=${{env.SMTP_PASSWORD}} -e SMTP_USER=${{env.SMTP_USER}} -e SMTP_PORT=${{env.SMTP_PORT}} -e SMTP_HOST=${{env.SMTP_HOST}} -e REFRESH_EXPIRE_TIME=${{env.REFRESH_EXPIRE_TIME}} -e ACCESS_EXPIRE_TIME=${{env.ACCESS_EXPIRE_TIME}} -e REFRESH_KEY=${{env.REFRESH_KEY}} -e ACCESS_KEY=${{env.ACCESS_KEY}} -e DATABASE_URL=${{env.DATABASE_URL}} -e PORT=3000 -p 5000:3000 ${{env.DOCKER_USERNAME}}/erpsystem:latest
 
