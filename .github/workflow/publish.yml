@@ -1,9 +1,0 @@
-name: Build, push, and Deploy Docker image
-
-on: 
-  push: 
-    branches: 
-      - main
-
-env:
-  DOCKER_USERNAME: {{secrets.DOCKER_USERNAME}}
