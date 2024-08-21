@@ -76,6 +76,12 @@ model Otps {
   @@map("otps")
 }
 
+model Test {
+  id        String   @id @default(uuid())
+  name String
+  @@map("test")
+}
+
 model RefreshTokens {
   id        String   @id @default(uuid())
   email     String
