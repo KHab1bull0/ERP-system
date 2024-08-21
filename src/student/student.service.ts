@@ -21,7 +21,7 @@ export class StudentService {
         const { email } = signupStudentDto;
         const user = await prisma.student.findFirst({ where: { email: email } });
         console.log(user);
-        
+
         if (user) {
           return { message: "Student already exists", status: HttpStatus.BAD_REQUEST }
         }
@@ -36,16 +36,13 @@ export class StudentService {
 
         let checkotp = false
 
-        // if (signupStudentDto.email) {
-          // throw new Error('error ')
-          const number = this.otp.generateOtp(6)
-          await prisma.otps.create({
-            data: { email: email, otp: number }
-          });
+        const number = this.otp.generateOtp(6)
+        await prisma.otps.create({
+          data: { email: email, otp: number }
+        });
 
-          this.mail.sendMail(email, 'Otp', number)
-          checkotp = true
-        // }
+        this.mail.sendMail(email, 'Otp', number)
+        checkotp = true
 
         delete newUser.password;
         return {
