@@ -1,0 +1,8 @@
+-- AlterTable
+ALTER TABLE "student" ALTER COLUMN "firstname" SET DEFAULT '',
+ALTER COLUMN "lastname" SET DEFAULT '',
+ALTER COLUMN "email" SET DEFAULT '',
+ALTER COLUMN "password" SET DEFAULT '',
+ALTER COLUMN "phone" SET DEFAULT '',
+ALTER COLUMN "group_id" SET DEFAULT '',
+ALTER COLUMN "photo_url" SET DEFAULT '';

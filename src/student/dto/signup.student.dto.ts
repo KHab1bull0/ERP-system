@@ -1,4 +1,4 @@
-import { IsBoolean, IsString, isString } from "class-validator";
+import { IsBoolean, IsOptional, IsString, isString } from "class-validator";
 
 
 export class SignupStudentDto {
@@ -7,10 +7,11 @@ export class SignupStudentDto {
     firstname: string;
 
     @IsString()
-    lastname: string = '';
+    @IsOptional()
+    lastname: string;
 
     @IsString()
-    email: string = '';
+    email: string;
 
     @IsString()
     password: string;
@@ -19,11 +20,14 @@ export class SignupStudentDto {
     phone: string;
 
     @IsString()
-    photo_url: string = '';
+    @IsOptional()
+    photo_url: string;
 
     @IsBoolean()
+    @IsOptional()
     isActive: boolean = false;
 
     @IsString()
-    group_id: string = '';
+    @IsOptional()
+    group_id: string;
 }

@@ -16,37 +16,48 @@ export class StudentService {
   ) { }
 
   async signupStudent(signupStudentDto: SignupStudentDto) {
-    try {
-      const { email } = signupStudentDto;
-      const user = await this.prisma.student.findFirst({ where: { email: email } });
+    return this.prisma.$transaction(async (prisma) => {
+      try {
+        const { email } = signupStudentDto;
+        const user = await prisma.student.findFirst({ where: { email: email } });
+        console.log(user);
+        
+        if (user) {
+          return { message: "Student already exists", status: HttpStatus.BAD_REQUEST }
+        }
+        console.log(signupStudentDto);
 
-      if (user) {
-        return { message: "Student already exists", status: HttpStatus.BAD_REQUEST }
+        signupStudentDto.password = await this.hash.hashPassword(signupStudentDto.password);
+
+        const newUser = await prisma.student.create({
+          data: signupStudentDto
+        });
+
+
+        let checkotp = false
+
+        // if (signupStudentDto.email) {
+          // throw new Error('error ')
+          const number = this.otp.generateOtp(6)
+          await prisma.otps.create({
+            data: { email: email, otp: number }
+          });
+
+          this.mail.sendMail(email, 'Otp', number)
+          checkotp = true
+        // }
+
+        delete newUser.password;
+        return {
+          sendOtp: checkotp,
+          newStudent: newUser
+        }
+
+      } catch (e) {
+        console.log(e);
+        throw { error: e, status: HttpStatus.INTERNAL_SERVER_ERROR }
       }
-
-      signupStudentDto.password = await this.hash.hashPassword(signupStudentDto.password);
-
-      const newUser = await this.prisma.student.create({
-        data: signupStudentDto
-      });
-
-      const number = this.otp.generateOtp(6)
-      await this.prisma.otps.create({
-        data: { email: email, otp: number }
-      });
-
-      this.mail.sendMail(email, 'Otp', number)
-
-      delete newUser.password;
-      return {
-        sendOtp: true,
-        newStudent: newUser
-      }
-
-    } catch (e) {
-      console.log(e);
-      return { error: e, status: HttpStatus.INTERNAL_SERVER_ERROR }
-    }
+    });
   }
 
   async findAll() {

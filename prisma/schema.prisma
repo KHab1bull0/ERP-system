@@ -28,14 +28,14 @@ model User {
 
 model Student {
   id        String  @id @default(uuid())
-  firstname String
-  lastname  String
-  email     String
-  password  String
-  phone     String
-  photo_url String
+  firstname String  @default("null")
+  lastname  String  @default("null")
+  email     String  @default("null")
+  password  String  @default("null")
+  phone     String  @default("null")
+  photo_url String  @default("null")
   isActive  Boolean @default(false)
-  group_id  String  
+  group_id  String  @default("null")
 
   @@map("student")
 }

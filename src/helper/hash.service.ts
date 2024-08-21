@@ -7,7 +7,7 @@ export class HashService {
     private readonly saltRounds = 10;
 
     async hashPassword(password: string) {
-        const salt = await bcrypt.genSalt(10);
+        const salt = await bcrypt.genSalt(this.saltRounds);
         console.log(salt);
         
         return await bcrypt.hash(password, salt);
