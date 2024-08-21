@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import * as bcrypt from 'bcryptjs';
+import * as bcrypt from 'bcrypt';
 
 
 @Injectable()
@@ -8,6 +8,8 @@ export class HashService {
 
     async hashPassword(password: string) {
         const salt = await bcrypt.genSalt(10);
+        console.log(salt);
+        
         return await bcrypt.hash(password, salt);
     }
 
